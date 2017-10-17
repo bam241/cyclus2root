@@ -42,7 +42,7 @@ def build_var(parameter_list):
 
 
 def main():
-# Get list of output metrics
+    # Get list of output metrics
     parameter_list = build_param_list(sys.argv[1])
 
 # Initialise variable
@@ -80,13 +80,13 @@ def initialize_tree(file_name="tree.root", tree_name="myTTree"):
 
 
 def fill_tree(parameter_list):
-# Loop on Cyclus DB
+    # Loop on Cyclus DB
     global T, P, var
     file_list = [
-            '/Users/mouginot/work/fcci_calculation/exo_1/cyclus.sqlite',
-            '/Users/mouginot/work/fcci_calculation/exo_2/cyclus.sqlite',
-            '/Users/mouginot/work/fcci_calculation/exo_3/cyclus.sqlite',
-            '/Users/mouginot/work/fcci_calculation/exo_4/cyclus.sqlite']
+        '/Users/mouginot/work/fcci_calculation/exo_1/cyclus.sqlite',
+        '/Users/mouginot/work/fcci_calculation/exo_2/cyclus.sqlite',
+        '/Users/mouginot/work/fcci_calculation/exo_3/cyclus.sqlite',
+        '/Users/mouginot/work/fcci_calculation/exo_4/cyclus.sqlite']
     for file_name in file_list:
         db = cym.dbopen(file_name)
         evaler = cym.Evaluator(db=db, write=False)
@@ -110,7 +110,8 @@ def fill_tree(parameter_list):
 def get_val(ev, parameter):
     key = parameter[0]
     for i in range(len(parameter))[1:]:
-        if parameter[i] == ['']: parameter[i][:] = []
+        if parameter[i] == ['']:
+            parameter[i][:] = []
     fac1 = parameter[1]
     fac2 = parameter[2]
     nucs = parameter[3]
@@ -120,4 +121,6 @@ def get_val(ev, parameter):
     if key == "trans":
         return cytim.transactions(ev, senders=parameter[1], receivers=parameter[2], nucs=parameter[3])['Mass']
 
-main()
+
+if __name__ == '__main__':
+    main()
