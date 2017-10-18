@@ -41,21 +41,6 @@ def build_var(parameter_list):
         var.append(ROOT.vector('double')())
 
 
-def main():
-    # Get list of output metrics
-    parameter_list = build_param_list(sys.argv[1])
-
-# Initialise variable
-    build_var(parameter_list)
-# Open Ttree, and branch variables
-    initialize_tree()
-# fill the Tree
-    fill_tree(parameter_list)
-# Write and Close ROOT file
-    f.Write()
-    f.Close()
-
-
 def reset_var():
     T.clear()
     P.clear()
@@ -79,14 +64,9 @@ def initialize_tree(file_name="tree.root", tree_name="myTTree"):
         t.Branch(bname, var[i])
 
 
-def fill_tree(parameter_list):
+def fill_tree(parameter_list, file_list):
     # Loop on Cyclus DB
     global T, P, var
-    file_list = [
-        '/Users/mouginot/work/fcci_calculation/exo_1/cyclus.sqlite',
-        '/Users/mouginot/work/fcci_calculation/exo_2/cyclus.sqlite',
-        '/Users/mouginot/work/fcci_calculation/exo_3/cyclus.sqlite',
-        '/Users/mouginot/work/fcci_calculation/exo_4/cyclus.sqlite']
     for file_name in file_list:
         db = cym.dbopen(file_name)
         evaler = cym.Evaluator(db=db, write=False)
@@ -120,6 +100,24 @@ def get_val(ev, parameter):
         return cytim.inventories(ev, facilities=parameter[1], nucs=parameter[3])['Quantity']
     if key == "trans":
         return cytim.transactions(ev, senders=parameter[1], receivers=parameter[2], nucs=parameter[3])['Mass']
+
+
+def main():
+    # Get list of output metrics
+    parameter_list = build_param_list(sys.argv[1])
+    f = open(sys.argv[2], 'r')
+    file_list = []
+    for line in f:
+        file_list.append(line.rstrip())
+# Initialise variable
+    build_var(parameter_list)
+# Open Ttree, and branch variables
+    initialize_tree()
+# fill the Tree
+    fill_tree(parameter_list, file_list)
+# Write and Close ROOT file
+    f.Write()
+    f.Close()
 
 
 if __name__ == '__main__':
