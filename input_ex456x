@@ -1,0 +1,11 @@
+inv;storage_uox_spent;
+trans;;fabrication
+inv;storage_uox_spent;
+inv;pwr;
+inv;storage_uox_spent,pwr;
+inv;;
+trans;;nu_src
+inv;waste;
+inv;storage_uox_spent;
+inv;pwr;
+trans;;pwr
